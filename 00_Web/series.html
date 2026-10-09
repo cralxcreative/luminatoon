@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="shell-type" content="web_standard">
+  <meta name="description" content="Binge animated series and anime on Lumina Toon! Pick a series, pick a season, hit play.">
+  <title>Series &amp; Anime - Lumina Toon!</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka:wght@400;600;700;800&family=Rubik:wght@500;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+
+  <!-- Tailwind (CDN) + our config -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="js/tailwind-config.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body data-page="series" data-root="../" class="halftone-bg font-sans text-white antialiased selection:bg-comic-yellow selection:text-comic-ink min-h-screen">
+
+  <!-- Built by common.js -->
+  <div id="site-banner"></div>
+  <header id="site-header"></header>
+
+  <main class="w-full bg-transparent overflow-x-hidden">
+
+    <!-- archive.org status notice (filled by series.js) -->
+    <div id="archive-notice" class="w-full px-4 sm:px-8 lg:px-12 empty:hidden pt-6" aria-live="polite"></div>
+
+    <!-- ==========================================================
+         VIEW 1: CATALOG
+         ========================================================== -->
+    <div id="view-catalog" class="flex flex-col w-full">
+
+      <!-- MARQUEE STRIP -->
+      <div class="w-full bg-comic-yellow text-comic-ink py-2 px-4 sm:px-8 comic-border-thick border-t-0 border-x-0 overflow-hidden select-none">
+        <div class="flex items-center justify-between gap-6">
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="inline-flex items-center gap-1 bg-comic-pink text-white px-3 py-0.5 rounded-full font-bangers text-sm shadow-comic-sm -rotate-2 border-2 border-comic-ink">📺 BINGE MODE ON</span>
+            <span id="ticker-count" class="font-bangers text-lg tracking-wide hidden sm:inline text-comic-ink"></span>
+          </div>
+          <span class="hidden md:inline-flex items-center gap-1.5 bg-comic-dark text-comic-cyan px-3 py-1 rounded-xl border-2 border-comic-ink font-fredoka font-bold text-xs shadow-comic-sm">
+            <span class="material-symbols-outlined text-sm text-comic-yellow">cloud</span> NEW EPISODES STREAM STRAIGHT FROM THE ARCHIVE
+          </span>
+        </div>
+      </div>
+
+      <!-- FEATURED SERIES -->
+      <section class="w-full px-4 sm:px-8 lg:px-12 py-8 relative z-10" aria-label="Featured series">
+        <div class="bg-comic-panel border-3 border-comic-ink rounded-2xl p-6 sm:p-10 shadow-comic relative overflow-hidden">
+          <div class="absolute -top-16 -right-16 w-96 h-96 rounded-full bg-comic-pink/15 blur-3xl pointer-events-none"></div>
+          <div class="absolute -bottom-20 -left-20 w-96 h-96 rounded-full bg-comic-cyan/15 blur-3xl pointer-events-none"></div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+            <div class="lg:col-span-7 flex flex-col justify-between order-2 lg:order-1">
+              <div class="flex flex-col gap-4">
+                <div id="hero-badges" class="flex flex-wrap items-center gap-2.5"></div>
+                <div class="flex flex-col gap-1 mt-1">
+                  <div class="flex items-center gap-2 text-comic-yellow font-fredoka font-black text-xs uppercase tracking-wider">
+                    <span class="material-symbols-outlined text-base">auto_awesome</span> SERIES SPOTLIGHT
+                  </div>
+                  <h1 id="hero-title" class="font-bangers text-3xl sm:text-5xl lg:text-6xl text-white tracking-wide leading-tight drop-shadow-[3px_3px_0px_#0a0814]"></h1>
+                  <div id="hero-genre" class="text-comic-cyan font-fredoka font-bold text-sm"></div>
+                </div>
+                <p id="hero-desc" class="font-fredoka text-sm text-gray-200 leading-relaxed max-w-2xl mt-1 clamp-2"></p>
+                <div id="hero-meta" class="flex flex-wrap items-center gap-3 text-xs font-fredoka text-gray-300 pt-1"></div>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-4 pt-6">
+                <a id="btn-hero-watch" href="#"
+                  class="px-6 py-3.5 rounded-xl bg-comic-yellow hover:bg-comic-lime text-comic-ink font-bangers text-xl tracking-wide border-3 border-comic-ink shadow-comic flex items-center gap-2.5 comic-btn cursor-pointer">
+                  <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span> Watch Now!
+                </a>
+                <button id="btn-hero-stash" type="button" data-stash=""
+                  class="w-12 h-12 rounded-xl bg-comic-dark hover:bg-comic-cyan hover:text-comic-ink text-white border-3 border-comic-ink shadow-comic flex items-center justify-center transition-all cursor-pointer comic-btn [&.is-saved]:bg-comic-yellow [&.is-saved]:text-comic-ink">
+                  <span class="material-symbols-outlined text-xl">bookmark_add</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="lg:col-span-5 relative order-1 lg:order-2">
+              <div class="relative rounded-2xl overflow-hidden border-3 border-comic-ink shadow-comic bg-comic-dark aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3] group">
+                <img id="hero-img" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                <div class="absolute inset-0 bg-gradient-to-t from-comic-ink/80 via-transparent to-transparent"></div>
+                <div class="absolute bottom-3 left-3 bg-comic-dark/95 border-2 border-comic-ink px-3 py-1.5 rounded-xl shadow-comic-sm flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-comic-lime animate-ping border border-comic-ink"></span>
+                  <span id="hero-tag" class="font-fredoka font-black text-xs text-comic-yellow uppercase"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FROM THE ARCHIVE -->
+      <section class="w-full px-4 sm:px-8 lg:px-12 py-8 relative z-10 reveal">
+        <div class="bg-comic-panel border-3 border-comic-ink rounded-2xl p-6 sm:p-8 shadow-comic">
+          <div class="flex flex-wrap items-center justify-between gap-4 mb-6 border-b-2 border-comic-ink pb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-comic-lime text-comic-ink border-2 border-comic-ink flex items-center justify-center font-bangers text-2xl shadow-comic-sm -rotate-3">📼</div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="bg-comic-pink text-white text-[10px] font-fredoka font-black px-2 py-0.5 rounded border border-comic-ink shadow-comic-sm uppercase">Full seasons</span>
+                  <span class="text-comic-cyan text-xs font-fredoka font-bold">EPISODE BY EPISODE</span>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-bangers text-white tracking-wider drop-shadow-[2px_2px_0px_#0a0814]">Streaming From The Archive</h2>
+              </div>
+            </div>
+            <span id="archive-count" class="bg-comic-dark text-comic-yellow px-3 py-1.5 rounded-xl border-2 border-comic-ink font-fredoka font-bold text-xs shadow-comic-sm"></span>
+          </div>
+          <div id="archive-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-5"></div>
+        </div>
+      </section>
+
+      <!-- FULL CATALOG -->
+      <section class="w-full px-4 sm:px-8 lg:px-12 py-8 relative z-10 reveal" id="catalog">
+        <div class="bg-comic-panel border-3 border-comic-ink rounded-2xl p-6 sm:p-8 shadow-comic flex flex-col gap-6">
+
+          <div class="flex flex-wrap items-center justify-between gap-4 border-b-2 border-comic-ink pb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-comic-purple text-comic-yellow border-2 border-comic-ink flex items-center justify-center font-bangers text-2xl shadow-comic-sm -rotate-2">📚</div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="bg-comic-yellow text-comic-ink text-[10px] font-fredoka font-black px-2 py-0.5 rounded border border-comic-ink shadow-comic-sm uppercase">The Big Series Shelf</span>
+                  <span id="catalog-total" class="text-comic-lime text-xs font-fredoka font-bold"></span>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-bangers text-white tracking-wider drop-shadow-[2px_2px_0px_#0a0814]">All Series &amp; Anime</h2>
+              </div>
+            </div>
+            <span id="catalog-count" class="bg-comic-dark text-comic-cyan px-3 py-1.5 rounded-xl border-2 border-comic-ink font-fredoka font-bold text-xs shadow-comic-sm" aria-live="polite"></span>
+          </div>
+
+          <div class="flex flex-col gap-4">
+            <div class="flex flex-wrap items-center justify-between gap-3 bg-comic-dark p-3 rounded-xl border-2 border-comic-ink shadow-comic-sm">
+              <div class="relative flex-1 min-w-[260px]">
+                <span class="material-symbols-outlined absolute left-3 top-2.5 text-comic-yellow text-lg pointer-events-none">search</span>
+                <input id="catalog-search-input" type="search" autocomplete="off"
+                  class="w-full pl-10 pr-4 py-2 bg-comic-panel rounded-lg font-fredoka text-xs text-white placeholder:text-gray-400 border-2 border-comic-ink focus:outline-none focus:border-comic-yellow transition-all"
+                  placeholder="Search by title, genre or story...  ( / )">
+              </div>
+              <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
+                <span class="font-fredoka font-bold text-xs text-gray-300 shrink-0 hidden sm:inline">Sort:</span>
+                <div id="sort-buttons" class="flex items-center gap-2"></div>
+              </div>
+            </div>
+            <div id="genre-filters" class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar"></div>
+          </div>
+
+          <div id="series-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 pt-2"></div>
+
+          <div id="catalog-empty" class="hidden text-center py-12 font-fredoka">
+            <div class="text-5xl mb-3">🔍</div>
+            <p class="font-bold text-white text-lg">No series match <span id="catalog-empty-q"></span></p>
+            <p class="text-sm text-gray-300 mb-5">Try a shorter title or switch to another genre.</p>
+            <button id="btn-clear-filters" type="button"
+              class="px-5 py-2.5 rounded-xl bg-comic-yellow text-comic-ink font-bangers text-lg tracking-wide border-2 border-comic-ink shadow-comic-sm comic-btn">Clear filters</button>
+          </div>
+
+          <div class="flex justify-center pt-4">
+            <button id="btn-load-more" type="button"
+              class="px-8 py-3.5 rounded-xl bg-comic-purple hover:bg-comic-pink text-white font-bangers text-lg tracking-wider border-3 border-comic-ink shadow-comic flex items-center gap-2.5 comic-btn cursor-pointer">
+              <span class="material-symbols-outlined text-xl text-comic-yellow">expand_more</span>
+              <span id="load-more-label">Load More Series</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ==========================================================
+         VIEW 2: ONE SERIES (series.html?id=...)
+         ========================================================== -->
+    <div id="view-detail" class="hidden w-full px-4 sm:px-8 lg:px-12 py-8 flex-col gap-8">
+
+      <nav id="d-crumbs" class="flex items-center gap-2 font-fredoka text-xs font-bold text-gray-300 overflow-x-auto no-scrollbar whitespace-nowrap" aria-label="Breadcrumb"></nav>
+
+      <section id="d-hero" aria-label="About this series"></section>
+
+      <section class="bg-comic-panel border-3 border-comic-ink rounded-2xl p-6 sm:p-8 shadow-comic flex flex-col gap-5" aria-label="Episodes">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b-2 border-comic-ink pb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-comic-cyan text-comic-ink border-2 border-comic-ink flex items-center justify-center font-bangers text-2xl shadow-comic-sm rotate-2">🎞️</div>
+            <div>
+              <h2 class="text-2xl sm:text-3xl font-bangers text-white tracking-wider drop-shadow-[2px_2px_0px_#0a0814]">Episodes</h2>
+              <span id="d-count" class="text-comic-yellow text-xs font-fredoka font-bold" aria-live="polite"></span>
+            </div>
+          </div>
+          <div class="relative min-w-[240px] flex-1 max-w-sm">
+            <span class="material-symbols-outlined absolute left-3 top-2.5 text-comic-yellow text-lg pointer-events-none">search</span>
+            <input id="d-ep-search" type="search" autocomplete="off"
+              class="w-full pl-10 pr-4 py-2 bg-comic-dark rounded-lg font-fredoka text-xs text-white placeholder:text-gray-400 border-2 border-comic-ink focus:outline-none focus:border-comic-yellow transition-all"
+              placeholder="Find an episode by title or number...">
+          </div>
+        </div>
+
+        <div id="d-seasons" class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar"></div>
+        <div id="d-episodes" class="flex flex-col gap-3"></div>
+
+        <div class="flex justify-center pt-2">
+          <button id="d-more" type="button" hidden
+            class="px-8 py-3 rounded-xl bg-comic-purple hover:bg-comic-pink text-white font-bangers text-lg tracking-wider border-3 border-comic-ink shadow-comic flex items-center gap-2.5 comic-btn cursor-pointer">
+            <span class="material-symbols-outlined text-xl text-comic-yellow">expand_more</span> Show more episodes
+          </button>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <!-- Scripts (order matters) -->
+  <script src="js/images.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/archive.js"></script>
+  <script src="js/meta.js"></script>
+  <script src="js/series.js"></script>
+
+  <!-- Firebase: sign-in + sync (deferred; the site works without it) -->
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script defer src="js/firebase-config.js"></script>
+  <script defer src="js/firebase.js"></script>
+</body>
+
+</html>
