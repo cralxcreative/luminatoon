@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="shell-type" content="web_standard">
+  <title>Now Playing - Lumina Toon!</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka:wght@400;600;700;800&family=Rubik:wght@500;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+
+  <!-- Tailwind (CDN) + our config -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="js/tailwind-config.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/player.css">
+</head>
+
+<body data-page="player" data-root="../" class="halftone-bg font-sans text-white antialiased selection:bg-comic-yellow selection:text-comic-ink min-h-screen">
+
+  <!-- Built by common.js -->
+  <div id="site-banner"></div>
+  <header id="site-header"></header>
+
+  <main class="w-full bg-transparent overflow-x-hidden px-4 sm:px-8 lg:px-12 py-8">
+
+    <!-- Breadcrumb -->
+    <nav id="crumbs" class="flex items-center gap-2 mb-5 font-fredoka text-xs font-bold text-gray-300 overflow-x-auto no-scrollbar whitespace-nowrap" aria-label="Breadcrumb"></nav>
+
+    <div id="watch-root">
+      <div id="watch-grid" class="watch-grid">
+
+        <!-- LEFT: player + info -->
+        <div class="flex flex-col gap-6 min-w-0">
+
+          <!-- PLAYER -->
+          <div id="player-stage" class="player-stage" tabindex="0" role="region" aria-label="Video player">
+            <video id="video" class="player-video" playsinline preload="metadata"></video>
+
+            <!-- Click / double-click layer -->
+            <div id="player-hit" class="absolute inset-0 z-[2]"></div>
+
+            <div class="player-shade"></div>
+
+            <!-- Visual feedback -->
+            <div id="skip-left" class="skip-zone is-left" aria-hidden="true">-10s</div>
+            <div id="skip-right" class="skip-zone is-right" aria-hidden="true">+10s</div>
+            <div id="flash" class="flash" aria-hidden="true"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">pause</span></div>
+            <button id="big-play" type="button" aria-label="Play" class="flash is-static">
+              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+            </button>
+            <div id="spinner" class="spinner" aria-hidden="true"></div>
+            <div id="hud" class="absolute top-16 left-1/2 -translate-x-1/2 z-[6] px-4 py-1.5 rounded-xl bg-comic-yellow text-comic-ink font-bangers text-lg tracking-wide border-2 border-comic-ink shadow-comic-sm opacity-0 pointer-events-none transition-opacity" role="status"></div>
+
+            <!-- Top bar -->
+            <div class="player-top flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <a id="stage-back" href="movies.html" class="pbtn shrink-0" aria-label="Back to movies"><span class="material-symbols-outlined">arrow_back</span></a>
+                <div class="min-w-0">
+                  <div id="stage-title" class="font-bangers text-xl sm:text-2xl text-white tracking-wide truncate drop-shadow-[2px_2px_0px_#0a0814]"></div>
+                  <div id="stage-sub" class="font-fredoka text-xs font-bold text-comic-cyan truncate"></div>
+                </div>
+              </div>
+              <button id="btn-help" type="button" class="pbtn shrink-0" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)"><span class="material-symbols-outlined">keyboard</span></button>
+            </div>
+
+            <!-- Error panel -->
+            <div id="panel-error" class="player-panel" hidden>
+              <div class="text-5xl">🙈</div>
+              <h3 class="font-bangers text-3xl text-comic-yellow tracking-wide">This video can't be played</h3>
+              <p class="font-fredoka text-sm text-gray-300 max-w-sm">The source didn't load. Check your connection and try again, or pick another title.</p>
+              <div class="flex gap-3 mt-2">
+                <button id="btn-retry" type="button" class="px-5 py-2.5 rounded-xl bg-comic-yellow text-comic-ink font-bangers text-lg border-2 border-comic-ink shadow-comic-sm comic-btn">Try again</button>
+                <a href="movies.html" class="px-5 py-2.5 rounded-xl bg-comic-panel text-white font-bangers text-lg border-2 border-comic-ink shadow-comic-sm comic-btn">Browse movies</a>
+              </div>
+            </div>
+
+            <!-- Up-next countdown -->
+            <div id="panel-next" class="player-panel" hidden>
+              <div class="font-fredoka text-xs font-black uppercase tracking-wider text-comic-cyan">Up next</div>
+              <div class="relative w-24 h-24">
+                <svg class="next-ring w-24 h-24" viewBox="0 0 80 80" aria-hidden="true">
+                  <circle class="ring-bg" cx="40" cy="40" r="36"></circle>
+                  <circle id="ring-fg" class="ring-fg" cx="40" cy="40" r="36"></circle>
+                </svg>
+                <div id="next-count" class="absolute inset-0 flex items-center justify-center font-bangers text-4xl text-comic-yellow">5</div>
+              </div>
+              <h3 id="next-title" class="font-bangers text-2xl sm:text-3xl text-white tracking-wide max-w-md"></h3>
+              <div class="flex gap-3 mt-1">
+                <button id="btn-next-now" type="button" class="px-5 py-2.5 rounded-xl bg-comic-yellow text-comic-ink font-bangers text-lg border-2 border-comic-ink shadow-comic-sm comic-btn">Play now</button>
+                <button id="btn-next-cancel" type="button" class="px-5 py-2.5 rounded-xl bg-comic-panel text-white font-bangers text-lg border-2 border-comic-ink shadow-comic-sm comic-btn">Cancel</button>
+                <button id="btn-replay" type="button" class="px-5 py-2.5 rounded-xl bg-comic-pink text-white font-bangers text-lg border-2 border-comic-ink shadow-comic-sm comic-btn">Replay</button>
+              </div>
+            </div>
+
+            <!-- Speed menu -->
+            <div id="speed-menu" class="player-menu" role="menu" aria-label="Playback speed" hidden></div>
+
+            <!-- Controls -->
+            <div class="player-controls" id="controls">
+              <div id="seek" class="seek" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div class="seek-track">
+                  <div id="seek-buffer" class="seek-buffer"></div>
+                  <div id="seek-fill" class="seek-fill"></div>
+                </div>
+                <div id="seek-thumb" class="seek-thumb"></div>
+                <div id="seek-tip" class="seek-tip">0:00</div>
+              </div>
+
+              <div class="flex items-center gap-1 sm:gap-2">
+                <button id="btn-play" type="button" class="pbtn" aria-label="Play (k)"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span></button>
+                <button id="btn-back10" type="button" class="pbtn" aria-label="Back 10 seconds (j)"><span class="material-symbols-outlined">replay_10</span></button>
+                <button id="btn-fwd10" type="button" class="pbtn" aria-label="Forward 10 seconds (l)"><span class="material-symbols-outlined">forward_10</span></button>
+
+                <div class="vol-wrap flex items-center">
+                  <button id="btn-mute" type="button" class="pbtn" aria-label="Mute (m)"><span class="material-symbols-outlined">volume_up</span></button>
+                  <div class="vol"><input id="vol-range" type="range" min="0" max="1" step="0.05" value="1" aria-label="Volume"></div>
+                </div>
+
+                <div class="font-fredoka font-bold text-xs sm:text-sm text-white ml-1 whitespace-nowrap">
+                  <span id="time-cur">0:00</span> / <span id="time-dur">0:00</span>
+                </div>
+
+                <div class="flex-1"></div>
+
+                <button id="btn-autoplay" type="button" class="pbtn hidden sm:inline-flex" aria-label="Autoplay next" aria-pressed="true" title="Autoplay next"><span class="material-symbols-outlined">skip_next</span></button>
+                <button id="btn-speed" type="button" class="pbtn !w-auto px-2 font-bangers text-lg tracking-wide" aria-haspopup="menu" aria-label="Playback speed" title="Playback speed">1x</button>
+                <button id="btn-pip" type="button" class="pbtn hidden sm:inline-flex" aria-label="Picture in picture (p)" title="Picture in picture (p)"><span class="material-symbols-outlined">picture_in_picture_alt</span></button>
+                <button id="btn-theater" type="button" class="pbtn hidden lg:inline-flex" aria-label="Theater mode (t)" aria-pressed="false" title="Theater mode (t)"><span class="material-symbols-outlined">crop_16_9</span></button>
+                <button id="btn-fs" type="button" class="pbtn" aria-label="Fullscreen (f)" title="Fullscreen (f)"><span class="material-symbols-outlined">fullscreen</span></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- INFO -->
+          <section class="bg-comic-panel border-3 border-comic-ink rounded-2xl p-5 sm:p-7 shadow-comic" aria-label="About this title">
+            <div id="info-badges" class="flex flex-wrap items-center gap-2.5 mb-3"></div>
+            <h1 id="info-title" class="font-bangers text-3xl sm:text-5xl text-white tracking-wide leading-tight drop-shadow-[3px_3px_0px_#0a0814]"></h1>
+            <div id="info-genre" class="text-comic-cyan font-fredoka font-bold text-sm mt-1"></div>
+            <p id="info-desc" class="font-fredoka text-sm sm:text-base text-gray-200 leading-relaxed max-w-3xl mt-4"></p>
+
+            <dl id="info-details" class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 font-fredoka"></dl>
+
+            <div class="flex flex-wrap items-center gap-3 mt-6 pt-5 border-t-2 border-comic-ink">
+              <button id="btn-stash" type="button" data-stash=""
+                class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-comic-purple hover:bg-comic-pink text-white font-fredoka font-black text-sm uppercase tracking-wider border-3 border-comic-ink shadow-comic-sm comic-btn [&.is-saved]:!bg-comic-yellow [&.is-saved]:!text-comic-ink">
+                <span class="material-symbols-outlined text-comic-yellow text-xl [.is-saved_&]:text-comic-ink">bookmark_add</span>
+                <span id="stash-label">Add to My Stash</span>
+              </button>
+              <button id="btn-like" type="button" aria-pressed="false" aria-label="Like"
+                class="w-12 h-12 rounded-xl bg-comic-dark text-white hover:bg-comic-lime hover:text-comic-ink border-3 border-comic-ink shadow-comic-sm flex items-center justify-center comic-btn aria-pressed:bg-comic-lime aria-pressed:text-comic-ink">
+                <span class="material-symbols-outlined text-xl">thumb_up</span>
+              </button>
+              <button id="btn-dislike" type="button" aria-pressed="false" aria-label="Dislike"
+                class="w-12 h-12 rounded-xl bg-comic-dark text-white hover:bg-comic-pink border-3 border-comic-ink shadow-comic-sm flex items-center justify-center comic-btn aria-pressed:bg-comic-pink">
+                <span class="material-symbols-outlined text-xl">thumb_down</span>
+              </button>
+              <button id="btn-share" type="button"
+                class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-comic-cyan hover:bg-comic-yellow text-comic-ink font-fredoka font-black text-sm uppercase tracking-wider border-3 border-comic-ink shadow-comic-sm comic-btn">
+                <span class="material-symbols-outlined text-xl">share</span> Share
+              </button>
+            </div>
+          </section>
+        </div>
+
+        <!-- RIGHT: up next -->
+        <aside class="flex flex-col gap-4 min-w-0" aria-label="Up next">
+          <div class="flex items-center justify-between">
+            <h2 class="font-bangers text-3xl text-white tracking-wide drop-shadow-[2px_2px_0px_#0a0814]">Up Next</h2>
+            <span id="up-next-tag" class="bg-comic-pink text-white px-2.5 py-1 rounded-lg border-2 border-comic-ink font-fredoka font-black text-[10px] uppercase shadow-comic-sm -rotate-2">You might like</span>
+          </div>
+          <div id="next-list" class="flex flex-col gap-3 lg:max-h-[78vh] lg:overflow-y-auto lg:pr-1"></div>
+        </aside>
+
+      </div>
+    </div>
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <!-- Scripts (order matters) -->
+  <script src="js/images.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/archive.js"></script>
+  <script src="js/meta.js"></script>
+  <script src="js/player.js"></script>
+
+  <!-- Firebase: login con Google + sincronización (defer; la web funciona sin él) -->
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script defer src="js/firebase-config.js"></script>
+  <script defer src="js/firebase.js"></script>
+</body>
+
+</html>

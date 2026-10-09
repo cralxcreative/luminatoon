@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="shell-type" content="web_standard">
+  <meta name="description" content="Lumina Toon! Stream animated series, anime and movies with zero ads.">
+  <title>Lumina Toon! - Retro Comic &amp; Neo-Brutalist Edition</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka:wght@400;600;700;800&family=Rubik:wght@500;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+
+  <!-- Tailwind (CDN) + our config -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="00_Web/js/tailwind-config.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="00_Web/css/styles.css">
+</head>
+
+<body data-page="home" data-root="./" class="halftone-bg font-sans text-white antialiased selection:bg-comic-yellow selection:text-comic-ink min-h-screen">
+
+  <!-- Built by common.js -->
+  <div id="site-banner"></div>
+  <header id="site-header"></header>
+
+  <main class="w-full bg-transparent overflow-x-hidden">
+
+    <!-- HERO SLIDER (rendered by index.js) -->
+    <section class="relative w-full px-4 sm:px-8 lg:px-12 pt-8 pb-12" aria-label="Featured titles">
+      <div id="hero-frame" class="relative w-full rounded-3xl overflow-hidden comic-border-thick bg-comic-ink shadow-comic-xl">
+        <div id="hero-slide"></div>
+
+        <button id="hero-prev" type="button" aria-label="Previous slide"
+          class="absolute left-3 top-1/2 -translate-y-1/2 z-20 hidden md:flex w-11 h-11 rounded-xl bg-comic-panel hover:bg-comic-yellow hover:text-comic-ink text-comic-yellow border-2 border-comic-ink shadow-comic-sm items-center justify-center comic-btn">
+          <span class="material-symbols-outlined text-2xl font-bold">chevron_left</span>
+        </button>
+        <button id="hero-next" type="button" aria-label="Next slide"
+          class="absolute right-3 top-1/2 -translate-y-1/2 z-20 hidden md:flex w-11 h-11 rounded-xl bg-comic-panel hover:bg-comic-yellow hover:text-comic-ink text-comic-yellow border-2 border-comic-ink shadow-comic-sm items-center justify-center comic-btn">
+          <span class="material-symbols-outlined text-2xl font-bold">chevron_right</span>
+        </button>
+
+        <div id="hero-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2"></div>
+      </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <div class="w-full flex flex-col gap-14 px-4 sm:px-8 lg:px-12 pb-16">
+
+      <!-- CONTINUE WATCHING -->
+      <section id="continue" class="flex flex-col gap-5 reveal scroll-mt-28">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-10 h-10 rounded-xl bg-comic-yellow border-2 border-comic-ink flex items-center justify-center text-xl shadow-comic-sm -rotate-3">📺</span>
+            <div>
+              <h2 class="font-bangers text-3xl sm:text-4xl text-white tracking-wide drop-shadow-[2px_2px_0px_#0a0814] flex items-center gap-2">
+                Continue Watching <span class="text-comic-pink text-2xl font-fredoka font-black">#REPLAY</span>
+              </h2>
+              <p class="font-fredoka text-xs text-comic-cyan font-bold uppercase tracking-wider">Your paused episodes, right where you left them</p>
+            </div>
+          </div>
+          <div class="hidden md:flex items-center gap-2.5">
+            <button type="button" data-rail="rail-continue" data-dir="-1" aria-label="Previous"
+              class="w-10 h-10 rounded-xl bg-comic-panel hover:bg-comic-yellow hover:text-comic-ink text-comic-yellow border-2 border-comic-ink shadow-comic-sm flex items-center justify-center comic-btn">
+              <span class="material-symbols-outlined text-xl font-bold">chevron_left</span>
+            </button>
+            <button type="button" data-rail="rail-continue" data-dir="1" aria-label="Next"
+              class="w-10 h-10 rounded-xl bg-comic-panel hover:bg-comic-yellow hover:text-comic-ink text-comic-yellow border-2 border-comic-ink shadow-comic-sm flex items-center justify-center comic-btn">
+              <span class="material-symbols-outlined text-xl font-bold">chevron_right</span>
+            </button>
+          </div>
+        </div>
+        <div id="rail-continue" class="flex items-stretch gap-6 overflow-x-auto scroll-smooth pb-4 pt-1 snap-x snap-mandatory"></div>
+      </section>
+
+      <!-- TRENDING -->
+      <section id="trending" class="flex flex-col gap-5 reveal scroll-mt-28">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-10 h-10 rounded-xl bg-comic-pink border-2 border-comic-ink flex items-center justify-center text-xl shadow-comic-sm rotate-3">✨</span>
+            <div>
+              <h2 class="font-bangers text-3xl sm:text-4xl text-white tracking-wide drop-shadow-[2px_2px_0px_#0a0814] flex items-center gap-2">
+                Trending Animation <span class="text-comic-yellow text-2xl font-fredoka font-black">★ POP TRENDS</span>
+              </h2>
+              <p class="font-fredoka text-xs text-comic-pink font-bold uppercase tracking-wider">This week's most acclaimed covers and stickers!</p>
+            </div>
+          </div>
+          <div class="hidden md:flex items-center gap-2.5">
+            <button type="button" data-rail="rail-trending" data-dir="-1" aria-label="Previous"
+              class="w-10 h-10 rounded-xl bg-comic-panel hover:bg-comic-pink hover:text-white text-comic-yellow border-2 border-comic-ink shadow-comic-sm flex items-center justify-center comic-btn">
+              <span class="material-symbols-outlined text-xl font-bold">chevron_left</span>
+            </button>
+            <button type="button" data-rail="rail-trending" data-dir="1" aria-label="Next"
+              class="w-10 h-10 rounded-xl bg-comic-panel hover:bg-comic-pink hover:text-white text-comic-yellow border-2 border-comic-ink shadow-comic-sm flex items-center justify-center comic-btn">
+              <span class="material-symbols-outlined text-xl font-bold">chevron_right</span>
+            </button>
+          </div>
+        </div>
+        <div id="rail-trending"
+          class="grid grid-flow-col auto-cols-[185px] sm:auto-cols-[215px] lg:auto-cols-[240px] gap-5 overflow-x-auto scroll-smooth pb-5 pt-1 snap-x snap-mandatory"></div>
+      </section>
+
+      <!-- TOP 10 -->
+      <section id="top10" class="flex flex-col gap-6 reveal scroll-mt-28">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div class="flex flex-col gap-1">
+            <div class="inline-flex items-center gap-1.5 text-comic-yellow font-bangers text-lg tracking-wider">
+              <span class="material-symbols-outlined text-xl">military_tech</span> TOON POPULARITY RANKING #1 TO #10
+            </div>
+            <h2 class="font-bangers text-3xl sm:text-4xl text-white tracking-wide drop-shadow-[3px_3px_0px_#0a0814]">
+              Top 10 Most Watched on Lumina Toon
+            </h2>
+          </div>
+          <div id="filter-pills" class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar"></div>
+        </div>
+        <div id="rail-top" class="flex items-center gap-12 overflow-x-auto pb-8 pt-4 snap-x snap-mandatory"></div>
+      </section>
+
+      <!-- AVATAR PATCHES -->
+      <section class="w-full rounded-3xl bg-comic-panel border-3 border-comic-ink p-6 sm:p-10 shadow-comic-xl relative overflow-hidden reveal">
+        <div class="absolute -right-8 -top-8 w-44 h-44 rounded-full bg-comic-yellow/15 blur-2xl pointer-events-none"></div>
+        <div class="absolute -left-8 -bottom-8 w-44 h-44 rounded-full bg-comic-pink/15 blur-2xl pointer-events-none"></div>
+        <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+          <div class="flex flex-col gap-3 max-w-xl text-center lg:text-left">
+            <div class="inline-flex items-center justify-center lg:justify-start gap-2 text-comic-yellow font-bangers text-base tracking-wider">
+              <span class="material-symbols-outlined text-2xl">palette</span>
+              BUILD YOUR ANIMATED AVATAR • PATCHES &amp; STICKERS
+            </div>
+            <h3 class="font-bangers text-3xl sm:text-4xl text-white tracking-wide">
+              Pick a patch for your profile!
+            </h3>
+            <p class="font-fredoka text-sm text-gray-300 font-semibold leading-relaxed">
+              Choose the sticker that shows up next to your name in the header.
+            </p>
+          </div>
+
+          <div id="avatar-patches" class="flex items-center gap-3 bg-comic-ink/80 p-3 rounded-2xl border-2 border-comic-ink shadow-comic">
+            <button type="button" data-emoji="🐱" title="Cat patch" aria-label="Cat patch"
+              class="w-14 h-14 rounded-2xl bg-comic-yellow border-3 border-comic-ink flex items-center justify-center text-2xl shadow-comic-sm rotate-[-8deg] hover:rotate-0 hover:scale-110 transition-transform cursor-pointer">🐱</button>
+            <button type="button" data-emoji="🚀" title="Rocket patch" aria-label="Rocket patch"
+              class="w-14 h-14 rounded-2xl bg-comic-pink border-3 border-comic-ink flex items-center justify-center text-2xl shadow-comic-sm rotate-[5deg] hover:rotate-0 hover:scale-110 transition-transform cursor-pointer">🚀</button>
+            <button type="button" data-emoji="🤖" title="Robot patch" aria-label="Robot patch"
+              class="w-14 h-14 rounded-2xl bg-comic-cyan border-3 border-comic-ink flex items-center justify-center text-2xl shadow-comic-sm rotate-[-4deg] hover:rotate-0 hover:scale-110 transition-transform cursor-pointer">🤖</button>
+            <button type="button" data-emoji="🐼" title="Panda patch" aria-label="Panda patch"
+              class="w-14 h-14 rounded-2xl bg-comic-lime border-3 border-comic-ink flex items-center justify-center text-2xl shadow-comic-sm rotate-[7deg] hover:rotate-0 hover:scale-110 transition-transform cursor-pointer">🐼</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <!-- Scripts (order matters) -->
+  <script src="00_Web/js/images.js"></script>
+  <script src="00_Web/js/data.js"></script>
+  <script src="00_Web/js/config.js"></script>
+  <script src="00_Web/js/common.js"></script>
+  <script src="00_Web/js/archive.js"></script>
+  <script src="00_Web/js/meta.js"></script>
+  <script src="00_Web/js/index.js"></script>
+
+  <!-- Firebase: login con Google + sincronización (defer; la web funciona sin él) -->
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script defer src="00_Web/js/firebase-config.js"></script>
+  <script defer src="00_Web/js/firebase.js"></script>
+</body>
+
+</html>
